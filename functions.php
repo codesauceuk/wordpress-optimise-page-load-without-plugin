@@ -3,6 +3,19 @@ Add the following code to your WordPress theme's functions.php file
 ************************************************************** */
 
 /* *******************************
+Async load scripts
+******************************* */
+add_filter( 'clean_url', 'custom_async_scripts', 11, 1 );
+function custom_async_scripts($url) {
+    if ( strpos( $url, '#asyncload') === false )
+        return $url;
+    else if ( is_admin() )
+        return str_replace( '#asyncload', '', $url );
+    else
+	return str_replace( '#asyncload', '', $url )."' async='async";
+}
+
+/* *******************************
 Remove Query String from Static Resources
 ******************************* */
 add_filter( 'style_loader_src', 'remove_cssjs_ver', 10, 2 );
